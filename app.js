@@ -33,7 +33,7 @@ app.set('view engine', 'ejs');                    // 要使用的模板引擎式
 // 动态视图助手
 // 写在所有use 前面
 app.use(function(req, res, next) {
-  res.locals.appUrl = req.url;
+  res.locals.appUrl = req.urlg;
   res.locals.inspext = function() {
     return util.inspect(obj, true)
   }
