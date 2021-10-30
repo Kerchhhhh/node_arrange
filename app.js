@@ -4,11 +4,16 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
 // 指定路径组织返回内容 控制器
 var indexRouter = require('./routes/index');    
 var usersRouter = require('./routes/users');    
 var helloRouter = require('./routes/hello');
 var usernameRouter = require('./routes/username');
+var listRouter = require('./routes/list');
+
+var partials = require('express-partials');
+var util = require('util');
 
 var app = express();
 
@@ -17,17 +22,31 @@ var app = express();
 // 设置模板引擎和页面模板
 app.set('views', path.join(__dirname, 'views'));  // 页面模板在views子目录下
 app.set('view engine', 'ejs');                    // 要使用的模板引擎式ejs
-/* 
-页面布局功能关闭
-app.set('view option', {
-  layout: false
+
+/**
+ * 页面布局功能关闭
+ * app.set('view option', {
+ *  layout: false
+ * })
+ */
+
+// 动态视图助手
+// 写在所有use 前面
+app.use(function(req, res, next) {
+  res.locals.appUrl = req.url;
+  res.locals.inspext = function() {
+    return util.inspect(obj, true)
+  }
+  next();
 })
-*/
 
-// 视图片段
+// 静态视图助手
+app.locals.staticValue = 'appname static helper';
+app.locals.staticMethod = function() {
+  return 'this is a static methods';
+};
 
-
-
+ app.use(partials());
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -36,10 +55,19 @@ app.use(cookieParser());
 // 配置静态文件服务器
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/hello', helloRouter);
 app.use('/users/:username', usernameRouter);
+app.use('/list', listRouter);
+
+
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
