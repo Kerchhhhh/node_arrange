@@ -3,17 +3,18 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bodyParser = require('body-parser');
+var exphbs = require('express-handlebars');
+var flash = require('connect-flash');
 
+var session = require('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 // 指定路径组织返回内容 控制器
-var indexRouter = require('./routes/index');    
-var usersRouter = require('./routes/users');    
-var helloRouter = require('./routes/hello');
-var usernameRouter = require('./routes/username');
-var listRouter = require('./routes/list');
+var routes = require('./routes/index');
+var mylib = require('./routes/')
 
-var partials = require('express-partials');
-var util = require('util');
 
 var app = express();
 
@@ -21,6 +22,11 @@ var app = express();
 // app.set('title', 'My Site')
 // 设置模板引擎和页面模板
 app.set('views', path.join(__dirname, 'views'));  // 页面模板在views子目录下
+app.engine('ejs', exphbs({
+  defaultLayout: 'layout',
+  helpers: helpers,
+  partialsDir: ['']
+}))
 app.set('view engine', 'ejs');                    // 要使用的模板引擎式ejs
 
 /**

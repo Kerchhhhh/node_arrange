@@ -1,0 +1,25 @@
+// 数据库中各表说明
+
+// 账号信息
+mysql> CREATE DATABASE student(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,		// 主键
+	stuId VARCHAR(10) NOT NULL UNIQUE,					// 唯一
+	stuPassword VARCHAR(200) NOT NULL,								// 密码
+	stuName VARCHAR(20) NOT NULL,										// utf8
+	sex CHAR(1) NOT NULL,													// m-男 f-女
+	phone VARCHAR(50),														// 电话
+	email VARCHAR(50),														// 邮箱
+	college VARCHAR(50),													// 学院
+	major VARCHAR(50),														// 专业
+);
+
+// 团队专利信息
+mysql> CREATE TABLE patent(
+	author VARCHAR(100) NOT NULL,
+	patent VARCHAR(100) NOT NULL,
+	patnumber VARCHAR(20) NOT NULL,
+	PRIMARY KEY(patnumber),
+);
+
+// 插入专利示例
+INSERT INTO patent VALUE()
